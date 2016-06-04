@@ -1,4 +1,4 @@
-package fr.fabiouxmontoro.threes;
+package fr.polytech.ihm.advthrees;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics;
@@ -7,14 +7,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements KeyListener, MouseListener {
+public class GamePanel extends JPanel implements KeyListener, MouseListener,MouseMotionListener {
 	private final static long serialVersionUID = 1L;
+	private final static int SWIPE_MIN_MOVE = 5; 
 
-
+	private boolean mousePressed;
+	private int mouseX=0;
+	private int mouseY=0;
+	private int mouseDirection;
+	
+	private CircularMenu circularMenu;
 	private Tile[] tiles;
 	private ArrayList<MovingTile> movingTiles;
 
@@ -29,6 +36,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 		this.threes = threes;
 		setFocusable(true);
 
+		mouseDirection=-1;
+		mousePressed=false;
+		
 		// Tuiles du jeu
 		int i;
 		tilesValue = new int[Threes.TILES_NB];
@@ -38,10 +48,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 					(Tile.TILES_SIZE_Y+Tile.TILES_GAP)*(i/Threes.TILES_NB_L)+Tile.TILES_GAP);
 
 		movingTiles = new ArrayList<MovingTile>();
-
+		circularMenu=new CircularMenu();
+		
 		// Evenements listeners
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 
 
@@ -128,6 +140,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 		int i, j;
 		boolean growingTile = false;
 
+			
+		
 		// Affichage des tuiles immobiles
 		for(i = 0; i < Threes.TILES_NB; i++)
 		{
@@ -155,8 +169,13 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 		}
 
 		// Si aucune tuile ne bouge, l'utilisateur peut jouer
-		if(movingTiles.isEmpty() && !growingTile)
+		if(movingTiles.isEmpty() && !growingTile){
 			threes.unfreezeControls();
+			
+		}
+		if(mousePressed){
+			circularMenu.render(mouseDirection,getMouseX(),getMouseY(),g2);
+		}
 	}
 
 	 /**
@@ -192,7 +211,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}
@@ -203,38 +223,81 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent arg0)
 	{
-		/* // Début de l'appui: position initiale
-		mousePosX = arg0.getX();
-		mousePosY = arg0.getY();
-		mouseTime = System.currentTimeMillis(); */
+		mousePressed=true;
+		mouseDirection=-1;
+		setMouseX(arg0.getX());
+		setMouseY(arg0.getY());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0)
 	{
-		/* // Fin de l'appui: calcul de l'écart
-		mouseDeltaX = mousePosX-arg0.getX();
-		mouseDeltaY = mousePosY-arg0.getY();
-
-		// Calcul de la vitesse du swipe
-		mouseDeltaTime = System.currentTimeMillis() - mouseTime;
-		mouseSpeedX = Math.abs(mouseDeltaX/(mouseDeltaTime));
-		mouseSpeedY = Math.abs(mouseDeltaY/(mouseDeltaTime));
-
-		if(mouseSpeedX > mouseSpeedY
-				&& (Math.abs(mouseDeltaX) > SWIPE_MIN_MOVE) && (mouseSpeedX > SWIPE_MIN_SPEED))
-		{
-			if(mouseDeltaX > 0)
-				moveTiles(-1);
-			else
-				moveTiles(1);
+		int diffX=Math.abs(arg0.getX()-mouseX);
+		int diffY=Math.abs(arg0.getY()-mouseY);
+		
+		if(diffX>=diffY&&diffX>SWIPE_MIN_MOVE ){
+			if(mouseX>arg0.getX()){
+				threes.moveTiles(-1);
+			}
+			else{
+				threes.moveTiles(1);
+			}
 		}
-		else if((Math.abs(mouseDeltaY) > SWIPE_MIN_MOVE) && (mouseSpeedY > SWIPE_MIN_SPEED))
-		{
-			if(mouseDeltaY > 0)
-				moveTiles(-1*Threes.TILES_NB_L);
-			else
-				moveTiles(Threes.TILES_NB_L);
-		} */
+		else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
+				if(mouseY>arg0.getY()){
+					threes.moveTiles(-1*Threes.TILES_NB_L);
+				}
+				else{
+					threes.moveTiles(Threes.TILES_NB_L);
+				}
+		}
+		mousePressed=false;
+	}
+	
+	public int getMouseX() {
+		return mouseX;
+	}
+
+
+	public void setMouseX(int mouseX) {
+		this.mouseX = mouseX;
+	}
+
+
+	public int getMouseY() {
+		return mouseY;
+	}
+
+
+	public void setMouseY(int mouseY) {
+		this.mouseY = mouseY;
+	}
+
+
+	@Override
+	public void mouseDragged(MouseEvent e){
+		int diffX=Math.abs(e.getX()-mouseX);
+		int diffY=Math.abs(e.getY()-mouseY);
+		
+		if(diffX>diffY&&diffX>SWIPE_MIN_MOVE){
+			if(mouseX>e.getX()){
+				mouseDirection=3;
+			}
+			else{
+				mouseDirection=1;
+			}
+		}
+		else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
+			if(mouseY>e.getY()){
+				mouseDirection=0;
+			}
+			else{
+				mouseDirection=2;
+			}
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
 	}
 }
