@@ -1,18 +1,13 @@
 package fr.polytech.ihm.advthrees;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.util.Random;
 import java.util.Timer;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Threes extends JFrame {
@@ -20,8 +15,8 @@ public class Threes extends JFrame {
 	private final static long serialVersionUID = 1L;
 	public final static int TILES_NB_L = 4;						// Nombre de tuiles par ligne
 	public final static int TILES_NB = TILES_NB_L * TILES_NB_L;	// Nombre de tuiles total
-	public final static int TILES_INIT_MIN = 16;					// Nombre de tuiles minimum au démarrage
-	public final static int TILES_INIT_MAX = 16;					// Nombre de tuiles maximum au démarrage
+	public final static int TILES_INIT_MIN = 4;					// Nombre de tuiles minimum au démarrage
+	public final static int TILES_INIT_MAX = 6;					// Nombre de tuiles maximum au démarrage
 
 	public final static int WINDOW_SIZE_X = Tile.TILES_SIZE_X * TILES_NB_L + Tile.TILES_GAP * (TILES_NB_L+1);	// Largeur de la fenêtre
 	public final static int WINDOW_SIZE_Y = Tile.TILES_SIZE_Y * TILES_NB_L + Tile.TILES_GAP * (TILES_NB_L+1);	// Hauteur de la fenêtre
@@ -107,7 +102,7 @@ public class Threes extends JFrame {
 		    contentPane.add(versionBase, 0);
 		    contentPane.revalidate();
 		    contentPane.repaint();
-		    versionBase.play();
+		    versionBase.play(this.getWidth(),this.getHeight());
 		}
 	}
 
