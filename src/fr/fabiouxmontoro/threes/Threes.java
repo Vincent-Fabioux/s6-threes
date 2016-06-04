@@ -1,4 +1,4 @@
-package fr.fabiouxmontoro.threes;
+package fr.polytech.ihm.advthrees;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,7 +28,7 @@ public class Threes extends JFrame {
 
 	public final static int MAIN_BUTTONS_SIZE_X = WINDOW_SIZE_X;			// Largeur des boutons principaux
 	public final static int MAIN_BUTTONS_SIZE_Y = WINDOW_SIZE_X / 8;		// Hauteur des boutons principaux
-	public final static int MAIN_BUTTONS_POLICE_SIZE = WINDOW_SIZE_X / 7;	// Taille de la police des boutons principaux
+	public final static int MAIN_BUTTONS_POLICE_SIZE = WINDOW_SIZE_X / 10;	// Taille de la police des boutons principaux
 	public final static int SCORE_LABEL_POLICE_SIZE = WINDOW_SIZE_X / 20;	// Taille de la police du score
 
 	public final static int FRAME_DELAY = 40; // Temps entre chaque frame (millisecondes)
@@ -36,14 +36,11 @@ public class Threes extends JFrame {
 	public final static float SWIPE_MIN_SPEED = 20/1000;	// Mouvement minimal de la souris pour être pris en compte
 
 
-	private JButton playButton;
-
 	private JPanel contentPane;
 	private MenuPanel menuPanel;
 	private GamePanel gamePanel;
+	private VersionBase versionBase;
 	private EndMenu endPanel;
-
-	private JLabel titleImage;
 
 	private int[] tilesValue;
 
@@ -70,7 +67,7 @@ public class Threes extends JFrame {
 	    this.setLocationRelativeTo(null);
 		setSize(new Dimension(WINDOW_SIZE_X, WINDOW_SIZE_Y));
 	    contentPane = (JPanel) getContentPane();
-
+	    
 	    timer = new Timer();
 	    timerTask = new ThreesTimerTask(this);
 
@@ -90,19 +87,28 @@ public class Threes extends JFrame {
 	/**
 	 * Lance une partie
 	 */
-	public void goToGame()
+	public void goToGame(int i)
 	{
-		initTiles();
-		controlsFreeze = false;
-		gamePanel.updateValues();
-
-	    contentPane.removeAll();
-	    contentPane.add(gamePanel, 0);
-	    contentPane.revalidate();
-	    contentPane.repaint();
-	    gamePanel.init();
-	    timerTask = new ThreesTimerTask(this);
-	    timer.scheduleAtFixedRate(timerTask, 0, FRAME_DELAY);
+		if(i==1){
+			initTiles();
+			controlsFreeze = false;
+			gamePanel.updateValues();
+		    contentPane.removeAll();
+		    contentPane.add(gamePanel, 0);
+		    contentPane.revalidate();
+		    contentPane.repaint();
+		    gamePanel.init();
+		    timerTask = new ThreesTimerTask(this);
+		    timer.scheduleAtFixedRate(timerTask, 0, FRAME_DELAY);
+		}
+		else if(i==0){
+			versionBase=new VersionBase();
+		    contentPane.removeAll();
+		    contentPane.add(versionBase, 0);
+		    contentPane.revalidate();
+		    contentPane.repaint();
+		    versionBase.play();
+		}
 	}
 
 
