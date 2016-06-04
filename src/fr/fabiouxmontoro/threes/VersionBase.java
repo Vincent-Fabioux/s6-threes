@@ -60,10 +60,10 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 	/**
      * Initialise tous les éléments graphiques du programme et lance le jeu
      */
-	public void play()
+	public void play(int window_Size_X,int window_Size_Y)
 	{
 	    // Initialisation de chaque partie du programme
-	    initGame();
+	    initGame(window_Size_X,window_Size_Y);
 		goToGame();
 
 	    setVisible(true);
@@ -133,7 +133,7 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 	/**
 	 * Initialise les éléments graphiques du jeu
 	 */
-	private void initGame()
+	private void initGame(int window_Size_X,int window_Size_Y)
 	{
 	    // Grille du jeu
 		grid = new GridLayout(TILES_NB_L, TILES_NB_L);
@@ -142,7 +142,8 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 		
 	    // Fenêtre de jeu
         gamePanel = new JPanel();
-	    gamePanel.setLayout(grid);
+        gamePanel.setPreferredSize(new Dimension(window_Size_X,window_Size_Y-60));
+        gamePanel.setLayout(grid);
 	    gamePanel.setBorder(BorderFactory.createEmptyBorder(TILES_GAP, TILES_GAP, TILES_GAP, TILES_GAP));
 		
 		// Tuiles du jeu
