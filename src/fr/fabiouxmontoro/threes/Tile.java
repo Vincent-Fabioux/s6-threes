@@ -1,4 +1,4 @@
-package fr.fabiouxmontoro.threes;
+package fr.polytech.ihm.advthrees;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,12 +10,12 @@ public class Tile
 	public final static int TILES_SIZE_X = 80;						// Largeur des tuiles
 	public final static int TILES_SIZE_Y = 120;						// Hauteur des tuiles
 	public final static int TILES_ROUND = 50;						// Arrondi des tuiles
-	public final static int TILES_GROWTH = 6;					// Grandissement des tuiles combin�es
+	public final static int TILES_GROWTH = 6;					// Grandissement des tuiles combinées
 	public final static int TILES_SPAWN_GROWTH = -10;			// Grandissement des tuiles qui apparaissent
 	public final static int TILES_GROWTH_SPEED = 1;			// Vitesse de grandissement des tuiles
 	public final static int TILES_GAP = 10;							// Ecart entre chaque tuile
 	public final static int TILES_POLICE_SIZE = TILES_SIZE_X / 3;	// Taille de la police des tuiles
-	public final static int TILES_TEXT_DELTA_Y = TILES_SIZE_Y / 2;	// Décalage horizontal du texte
+	public final static int TILES_TEXT_DELTA_Y = TILES_SIZE_Y / 2;	// DÃ©calage horizontal du texte
 	private final static Font TILES_FONT
 			= new Font("Arial", Font.BOLD, Tile.TILES_POLICE_SIZE); // Police du texte
 
