@@ -98,7 +98,7 @@ public class Threes extends JFrame {
 		    timer.scheduleAtFixedRate(timerTask, 0, FRAME_DELAY);
 		}
 		else if(i==0){
-			versionBase=new VersionBase();
+			versionBase=new VersionBase(this);
 		    contentPane.removeAll();
 		    contentPane.add(versionBase, 0);
 		    contentPane.revalidate();
