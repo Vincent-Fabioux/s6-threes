@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 	private final static int POSITION_IMAGE_MIN = 54; 
 	private final static int POSITION_IMAGE_MAX = 109; 	
 	
-	private boolean mouseLeftClcik;
+	private boolean mouseLeftClick;
 	private boolean mouseRightClick;
 	private int mousePosX=0;
 	private int mousePosY=0;
@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 		setFocusable(true);
 
 		mouseDirection=-1;
-		mouseLeftClcik=false;
+		mouseLeftClick=false;
 		mouseRightClick=false;
 		mouseDirectionTiles=0;
 		mouseOverImage=-1;
@@ -180,19 +180,19 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 
 		// Si aucune tuile ne bouge, l'utilisateur peut jouer
 		if(movingTiles.isEmpty() && !growingTile){
-			if(mouseRightClick&&!mouseLeftClcik&&mouseOverImage==-1)
+			if(mouseRightClick&&!mouseLeftClick&&mouseOverImage==-1)
 				circularMenu.render(-1,getMouseX(),getMouseY(),g2);
 			if(mouseOverImage!=-1){
 				circularMenu.render(mouseOverImage,getMouseX(),getMouseY(),g2);
 			}
 			threes.unfreezeControls();
 		}
-		if(mouseLeftClcik){
+		if(mouseLeftClick){
 			circularMenu.render(mouseDirection,getMouseX(),getMouseY(),g2);
 			if(mouseDirectionTiles!=0){
 				threes.moveTiles(mouseDirectionTiles);
 				mouseDirectionTiles=0;
-				mouseLeftClcik=false;
+				mouseLeftClick=false;
 				mouseRightClick=false;
 				mouseOverImage=-1;
 			}
@@ -224,7 +224,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 				break;
 				
 		}
-		mouseLeftClcik=false;
+		mouseLeftClick=false;
 		mouseRightClick=false;
 	}
 
@@ -239,32 +239,31 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 		if(mouseRightClick &&e.getButton()==1){
 			if(e.getX()>mousePosX-circularMenu.getHeight()/2&&e.getX()<mousePosX+circularMenu.getHeight()/2){
 				if(mousePosY-e.getY()>POSITION_IMAGE_MIN &&mousePosY-e.getY()<POSITION_IMAGE_MAX){
-					mouseLeftClcik=true;
+					mouseLeftClick=true;
 					mouseDirection=0;
 					mouseDirectionTiles=-4;
 				}
 				if(e.getY()-mousePosY>POSITION_IMAGE_MIN &&e.getY()-mousePosY<POSITION_IMAGE_MAX ){				
-					mouseLeftClcik=true;
+					mouseLeftClick=true;
 					mouseDirection=2;
 					mouseDirectionTiles=4;
 				}
 			}
 			if(e.getY()>mousePosY-circularMenu.getWidth()/2&&e.getY()<mousePosY+circularMenu.getWidth()/2){
 				if(mousePosX-e.getX()>POSITION_IMAGE_MIN&&mousePosX-e.getX()<POSITION_IMAGE_MAX ){
-					mouseLeftClcik=true;
+					mouseLeftClick=true;
 					mouseDirection=3;
 					mouseDirectionTiles=-1;
 				}
 				if(e.getX()-mousePosX>POSITION_IMAGE_MIN&&e.getX()-mousePosX<POSITION_IMAGE_MAX ){
-					mouseLeftClcik=true;
+					mouseLeftClick=true;
 					mouseDirection=1;
 					mouseDirectionTiles=1;
 				}
-			
 			}
 			if(!mouseLeftClick)
 				mouseRightClick=false;
-		}
+		}	
 	}
 
 	@Override
@@ -277,7 +276,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 	public void mousePressed(MouseEvent arg0)
 	{
 		if(arg0.getButton()==1&&!mouseRightClick){
-			mouseLeftClcik=true;
+			mouseLeftClick=true;
 			mouseDirection=-1;
 			setMouseX(arg0.getX());
 			setMouseY(arg0.getY());
@@ -312,7 +311,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 						threes.moveTiles(Threes.TILES_NB_L);
 					}
 			}
-			mouseLeftClcik=false;
+			mouseLeftClick=false;
 		}
 	}
 
