@@ -1,4 +1,4 @@
-package fr.polytech.ihm.advthrees;
+package fr.fabiouxmontoro.threes;
 
 import java.awt.Color;
 import java.awt.Dimension;
