@@ -11,11 +11,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class CircularMenu {
 	
-	BufferedImage imgMouse = null;
-	BufferedImage[] img = null;
+	private BufferedImage imgMouse = null;
+	private BufferedImage[] img = null;
 	
 	private static final double SCALING = 0.40;
 	private static final double SPACE = 1.8; 
@@ -37,9 +39,8 @@ public class CircularMenu {
 	
 	public void render(int mouseDirection,int mouseX,int mouseY,Graphics2D g2){
 		for(int i=0;i<NB_IMAGES;i++){
+			
 			AffineTransform at = new AffineTransform();
-			
-			
 			if(i==0)
 				at.translate(mouseX-img[i].getWidth()*SCALING/2,mouseY-(img[i].getHeight()*SCALING*SPACE));
 			else if(i==1)
@@ -57,5 +58,11 @@ public class CircularMenu {
 			else
 				g2.drawImage(img[i], at, null);
 		}
+	}
+	public double getHeight(){
+		return (img[0].getHeight()*SCALING*SPACE);
+	}
+	public double getWidth(){
+		return (img[0].getWidth()*SCALING);
 	}
 }
