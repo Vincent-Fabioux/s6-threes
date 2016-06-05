@@ -392,3 +392,20 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 			}
 		}
 	}
+
+	public int getMouseX() {
+		return mousePosX;
+	}
+
+	public void setMouseX(int mouseX) {
+		this.mousePosX = mouseX;
+	}
+
+	public int getMouseY() {
+		return mousePosY;
+	}
+
+	public void setMouseY(int mouseY) {
+		this.mousePosY = mouseY;
+	}
+}
