@@ -262,6 +262,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 				}
 			
 			}
+			if(!mouseLeftClick)
+				mouseRightClick=false;
 		}
 	}
 
