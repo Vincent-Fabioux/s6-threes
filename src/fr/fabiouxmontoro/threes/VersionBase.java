@@ -36,14 +36,19 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 	private final static int MAIN_BUTTONS_SIZE_X = WINDOW_SIZE_X;			// Largeur des boutons principaux
 	private final static int MAIN_BUTTONS_SIZE_Y = WINDOW_SIZE_X / 8;		// Hauteur des boutons principaux
 	private final static int MAIN_BUTTONS_POLICE_SIZE = WINDOW_SIZE_X / 7;	// Taille de la police des boutons principaux
-	private final static int SCORE_LABEL_POLICE_SIZE = WINDOW_SIZE_X / 15;	// Taille de la police du score
+	private final static int SCORE_LABEL_POLICE_SIZE = WINDOW_SIZE_X / 20;	// Taille de la police du score
 	
 	private final static int SWIPE_MIN_MOVE = 5;	// Mouvement minimal de la souris pour être pris en compte
 	private final static float SWIPE_MIN_SPEED = 20/1000;	// Mouvement minimal de la souris pour être pris en compte
 
-
-	private JPanel contentPane;
+	private Threes threes;
 	private JPanel gamePanel;
+	
+	private JButton replayButton;
+	private JButton quitButton;
+	private JPanel endPanel;
+	private JPanel endSouthPanel;
+	private JLabel scoreText;
 
 	private JLabel[] tiles;
 	private GridLayout grid;
@@ -54,7 +59,9 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 	/**
 	 * Créé une classe pour le jeu
 	 */
-	public VersionBase(){}
+	public VersionBase(Threes threes){
+		this.threes=threes;
+	}
 
 	
 	/**
@@ -185,6 +192,82 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener{
 	 */
 	private void goToEnd()
 	{
+		// Bouton REJOUER
+	    replayButton = new JButton("REJOUER");
+	    replayButton.setFont(new Font("Arial", Font.BOLD, MAIN_BUTTONS_POLICE_SIZE));
+	    replayButton.setPreferredSize(new Dimension(MAIN_BUTTONS_SIZE_X, MAIN_BUTTONS_SIZE_Y));
+	    replayButton.setBackground(Color.white);
+	    replayButton.addMouseListener(new MouseListener()
+	    {
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+				threes.replay();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+	    
+	    // Bouton QUITTER
+	    quitButton = new JButton("QUITTER");
+	    quitButton.setFont(new Font("Arial", Font.BOLD, MAIN_BUTTONS_POLICE_SIZE));
+	    quitButton.setPreferredSize(new Dimension(MAIN_BUTTONS_SIZE_X, MAIN_BUTTONS_SIZE_Y));
+	    quitButton.setBackground(Color.white);
+	    quitButton.addMouseListener(new MouseListener()
+	    {
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+				System.exit(0);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+		});
+		
+	    scoreText = new JLabel();
+	    scoreText.setFont(new Font("Arial", Font.BOLD, SCORE_LABEL_POLICE_SIZE));
+	    scoreText.setHorizontalAlignment(JLabel.CENTER);
+	    
+	    // Fenêtre sud du menu
+		endSouthPanel = new JPanel(new BorderLayout());
+		endSouthPanel.setBackground(Color.white);
+        endSouthPanel.add(replayButton, BorderLayout.NORTH);
+        endSouthPanel.add(quitButton, BorderLayout.SOUTH);
+	    
+	    // Fenêtre du menu
+		endPanel = new JPanel(new BorderLayout());
+		endPanel.setBackground(Color.white);
+		endPanel.add(scoreText, BorderLayout.CENTER);
+        endPanel.add(endSouthPanel, BorderLayout.SOUTH);
+        
+		scoreText.setText("Perdu! Votre score est de " + getScore() + ".");
+        
+		this.removeAll();
+	    this.add(endPanel);
+	    this.revalidate();
+	    this.repaint();
+	    setFocusable(true);
+	    requestFocusInWindow();
 	}
 	
 	
