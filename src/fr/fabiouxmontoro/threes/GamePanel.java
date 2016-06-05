@@ -11,15 +11,22 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements KeyListener, MouseListener,MouseMotionListener {
 	private final static long serialVersionUID = 1L;
 	private final static int SWIPE_MIN_MOVE = 5; 
 
-	private boolean mousePressed;
-	private int mouseX=0;
-	private int mouseY=0;
+	private final static int POSITION_IMAGE_MIN = 54; 
+	private final static int POSITION_IMAGE_MAX = 109; 	
+	
+	private boolean mouseLeftClcik;
+	private boolean mouseRightClick;
+	private int mousePosX=0;
+	private int mousePosY=0;
 	private int mouseDirection;
+	private int mouseDirectionTiles;
+	private int mouseOverImage;
 	
 	private CircularMenu circularMenu;
 	private Tile[] tiles;
@@ -37,7 +44,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 		setFocusable(true);
 
 		mouseDirection=-1;
-		mousePressed=false;
+		mouseLeftClcik=false;
+		mouseRightClick=false;
+		mouseDirectionTiles=0;
+		mouseOverImage=-1;
 		
 		// Tuiles du jeu
 		int i;
@@ -170,11 +180,22 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 
 		// Si aucune tuile ne bouge, l'utilisateur peut jouer
 		if(movingTiles.isEmpty() && !growingTile){
+			if(mouseRightClick&&!mouseLeftClcik&&mouseOverImage==-1)
+				circularMenu.render(-1,getMouseX(),getMouseY(),g2);
+			if(mouseOverImage!=-1){
+				circularMenu.render(mouseOverImage,getMouseX(),getMouseY(),g2);
+			}
 			threes.unfreezeControls();
-			
 		}
-		if(mousePressed){
+		if(mouseLeftClcik){
 			circularMenu.render(mouseDirection,getMouseX(),getMouseY(),g2);
+			if(mouseDirectionTiles!=0){
+				threes.moveTiles(mouseDirectionTiles);
+				mouseDirectionTiles=0;
+				mouseLeftClcik=false;
+				mouseRightClick=false;
+				mouseOverImage=-1;
+			}
 		}
 	}
 
@@ -201,7 +222,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 			case KeyEvent.VK_DOWN: // Si on a appuyé sur la flèche du bas
 				threes.moveTiles(Threes.TILES_NB_L);
 				break;
+				
 		}
+		mouseLeftClcik=false;
+		mouseRightClick=false;
 	}
 
 	@Override
@@ -212,6 +236,33 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(mouseRightClick &&e.getButton()==1){
+			if(e.getX()>mousePosX-circularMenu.getHeight()/2&&e.getX()<mousePosX+circularMenu.getHeight()/2){
+				if(mousePosY-e.getY()>POSITION_IMAGE_MIN &&mousePosY-e.getY()<POSITION_IMAGE_MAX){
+					mouseLeftClcik=true;
+					mouseDirection=0;
+					mouseDirectionTiles=-4;
+				}
+				if(e.getY()-mousePosY>POSITION_IMAGE_MIN &&e.getY()-mousePosY<POSITION_IMAGE_MAX ){				
+					mouseLeftClcik=true;
+					mouseDirection=2;
+					mouseDirectionTiles=4;
+				}
+			}
+			if(e.getY()>mousePosY-circularMenu.getWidth()/2&&e.getY()<mousePosY+circularMenu.getWidth()/2){
+				if(mousePosX-e.getX()>POSITION_IMAGE_MIN&&mousePosX-e.getX()<POSITION_IMAGE_MAX ){
+					mouseLeftClcik=true;
+					mouseDirection=3;
+					mouseDirectionTiles=-1;
+				}
+				if(e.getX()-mousePosX>POSITION_IMAGE_MIN&&e.getX()-mousePosX<POSITION_IMAGE_MAX ){
+					mouseLeftClcik=true;
+					mouseDirection=1;
+					mouseDirectionTiles=1;
+				}
+			
+			}
+		}
 	}
 
 	@Override
@@ -223,81 +274,109 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener,Mous
 	@Override
 	public void mousePressed(MouseEvent arg0)
 	{
-		mousePressed=true;
-		mouseDirection=-1;
-		setMouseX(arg0.getX());
-		setMouseY(arg0.getY());
+		if(arg0.getButton()==1&&!mouseRightClick){
+			mouseLeftClcik=true;
+			mouseDirection=-1;
+			setMouseX(arg0.getX());
+			setMouseY(arg0.getY());
+		}
+		if(arg0.getButton()==3){
+			mouseRightClick=true;
+			setMouseX(arg0.getX());
+			setMouseY(arg0.getY());
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0)
 	{
-		int diffX=Math.abs(arg0.getX()-mouseX);
-		int diffY=Math.abs(arg0.getY()-mouseY);
-		
-		if(diffX>=diffY&&diffX>SWIPE_MIN_MOVE ){
-			if(mouseX>arg0.getX()){
-				threes.moveTiles(-1);
-			}
-			else{
-				threes.moveTiles(1);
-			}
-		}
-		else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
-				if(mouseY>arg0.getY()){
-					threes.moveTiles(-1*Threes.TILES_NB_L);
+		if(arg0.getButton()==1&&!mouseRightClick){
+			int diffX=Math.abs(arg0.getX()-mousePosX);
+			int diffY=Math.abs(arg0.getY()-mousePosY);
+			
+			if(diffX>=diffY&&diffX>SWIPE_MIN_MOVE ){
+				if(mousePosX>arg0.getX()){
+					threes.moveTiles(-1);
 				}
 				else{
-					threes.moveTiles(Threes.TILES_NB_L);
+					threes.moveTiles(1);
 				}
+			}
+			else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
+					if(mousePosY>arg0.getY()){
+						threes.moveTiles(-1*Threes.TILES_NB_L);
+					}
+					else{
+						threes.moveTiles(Threes.TILES_NB_L);
+					}
+			}
+			mouseLeftClcik=false;
 		}
-		mousePressed=false;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e){
+		if(SwingUtilities.isLeftMouseButton(e)&&!mouseRightClick){
+			int diffX=Math.abs(e.getX()-mousePosX);
+			int diffY=Math.abs(e.getY()-mousePosY);
+			
+			if(diffX>diffY&&diffX>SWIPE_MIN_MOVE){
+				if(mousePosX>e.getX()){
+					mouseDirection=3;
+				}
+				else{
+					mouseDirection=1;
+				}
+			}
+			else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
+				if(mousePosY>e.getY()){
+					mouseDirection=0;
+				}
+				else{
+					mouseDirection=2;
+				}
+			}
+		}
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouseOverImage=-1;
+		if(mouseRightClick){
+			if(e.getX()>mousePosX-circularMenu.getHeight()/2&&e.getX()<mousePosX+circularMenu.getHeight()/2){
+				if(mousePosY-e.getY()>POSITION_IMAGE_MIN &&mousePosY-e.getY()<POSITION_IMAGE_MAX){
+					mouseOverImage=0;
+				}
+				if(e.getY()-mousePosY>POSITION_IMAGE_MIN &&e.getY()-mousePosY<POSITION_IMAGE_MAX ){				
+					mouseOverImage=2;
+				}
+			}
+			else if(e.getY()>mousePosY-circularMenu.getWidth()/2&&e.getY()<mousePosY+circularMenu.getWidth()/2){
+				if(mousePosX-e.getX()>POSITION_IMAGE_MIN&&mousePosX-e.getX()<POSITION_IMAGE_MAX ){
+					mouseOverImage=3;
+				}
+				if(e.getX()-mousePosX>POSITION_IMAGE_MIN&&e.getX()-mousePosX<POSITION_IMAGE_MAX ){
+					mouseOverImage=1;
+				}
+			}
+		}
 	}
 	
 	public int getMouseX() {
-		return mouseX;
+		return mousePosX;
 	}
 
 
 	public void setMouseX(int mouseX) {
-		this.mouseX = mouseX;
+		this.mousePosX = mouseX;
 	}
 
 
 	public int getMouseY() {
-		return mouseY;
+		return mousePosY;
 	}
 
 
 	public void setMouseY(int mouseY) {
-		this.mouseY = mouseY;
-	}
-
-
-	@Override
-	public void mouseDragged(MouseEvent e){
-		int diffX=Math.abs(e.getX()-mouseX);
-		int diffY=Math.abs(e.getY()-mouseY);
-		
-		if(diffX>diffY&&diffX>SWIPE_MIN_MOVE){
-			if(mouseX>e.getX()){
-				mouseDirection=3;
-			}
-			else{
-				mouseDirection=1;
-			}
-		}
-		else if(diffY>diffX&&diffY>SWIPE_MIN_MOVE){
-			if(mouseY>e.getY()){
-				mouseDirection=0;
-			}
-			else{
-				mouseDirection=2;
-			}
-		}
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
+		this.mousePosY = mouseY;
 	}
 }
