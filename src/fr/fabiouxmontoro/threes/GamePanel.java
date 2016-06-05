@@ -1,4 +1,4 @@
-package fr.polytech.ihm.advthrees;
+package fr.fabiouxmontoro.threes;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics;
@@ -203,26 +203,28 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP: // Si l'on a appuyé sur la flèche du haut
-			threes.moveTiles(-1 * Threes.TILES_NB_L);
-			break;
-
-		case KeyEvent.VK_RIGHT: // Si l'on a appuyé sur la flèche de droite
-			threes.moveTiles(1);
-			break;
-
-		case KeyEvent.VK_LEFT: // Si l'on a appuyé sur la flèche de gauche
-			threes.moveTiles(-1);
-			break;
-
-		case KeyEvent.VK_DOWN: // Si on a appuyé sur la flèche du bas
-			threes.moveTiles(Threes.TILES_NB_L);
-			break;
-
+		if(!threes.getGameFinish()){
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP: // Si l'on a appuyé sur la flèche du haut
+				threes.moveTiles(-1 * Threes.TILES_NB_L);
+				break;
+	
+			case KeyEvent.VK_RIGHT: // Si l'on a appuyé sur la flèche de droite
+				threes.moveTiles(1);
+				break;
+	
+			case KeyEvent.VK_LEFT: // Si l'on a appuyé sur la flèche de gauche
+				threes.moveTiles(-1);
+				break;
+	
+			case KeyEvent.VK_DOWN: // Si on a appuyé sur la flèche du bas
+				threes.moveTiles(Threes.TILES_NB_L);
+				break;
+	
+			}
+			mouseLeftClick = false;
+			mouseRightClick = false;
 		}
-		mouseLeftClick = false;
-		mouseRightClick = false;
 	}
 
 	@Override
@@ -238,42 +240,44 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// Si l'on a appuyé sur le bouton droit de la souris et fait apparaitre
-		// le menu circulaire et que l'on clique sur le bouton gauche
-		if (mouseRightClick && e.getButton() == 1) {
-			// Si l'on clique sur le bouton du haut du menu
-			if (e.getX() > mousePosX - circularMenu.getHeight() / 2
-					&& e.getX() < mousePosX + circularMenu.getHeight() / 2) {
-				if (mousePosY - e.getY() > POSITION_IMAGE_MIN && mousePosY - e.getY() < POSITION_IMAGE_MAX) {
-					mouseLeftClick = true;
-					mouseDirection = 0;
-					mouseDirectionTiles = -4;
+		if(!threes.getGameFinish()){
+			// Si l'on a appuyé sur le bouton droit de la souris et fait apparaitre
+			// le menu circulaire et que l'on clique sur le bouton gauche
+			if (mouseRightClick && e.getButton() == 1) {
+				// Si l'on clique sur le bouton du haut du menu
+				if (e.getX() > mousePosX - circularMenu.getHeight() / 2
+						&& e.getX() < mousePosX + circularMenu.getHeight() / 2) {
+					if (mousePosY - e.getY() > POSITION_IMAGE_MIN && mousePosY - e.getY() < POSITION_IMAGE_MAX) {
+						mouseLeftClick = true;
+						mouseDirection = 0;
+						mouseDirectionTiles = -4;
+					}
+					// Si l'on clique sur le bouton du bas du menu
+					if (e.getY() - mousePosY > POSITION_IMAGE_MIN && e.getY() - mousePosY < POSITION_IMAGE_MAX) {
+						mouseLeftClick = true;
+						mouseDirection = 2;
+						mouseDirectionTiles = 4;
+					}
 				}
-				// Si l'on clique sur le bouton du bas du menu
-				if (e.getY() - mousePosY > POSITION_IMAGE_MIN && e.getY() - mousePosY < POSITION_IMAGE_MAX) {
-					mouseLeftClick = true;
-					mouseDirection = 2;
-					mouseDirectionTiles = 4;
+				// Si l'on clique sur le bouton de gauche du menu
+				if (e.getY() > mousePosY - circularMenu.getWidth() / 2
+						&& e.getY() < mousePosY + circularMenu.getWidth() / 2) {
+					if (mousePosX - e.getX() > POSITION_IMAGE_MIN && mousePosX - e.getX() < POSITION_IMAGE_MAX) {
+						mouseLeftClick = true;
+						mouseDirection = 3;
+						mouseDirectionTiles = -1;
+					}
+					// Si l'on clique sur le bouton de droite du menu
+					if (e.getX() - mousePosX > POSITION_IMAGE_MIN && e.getX() - mousePosX < POSITION_IMAGE_MAX) {
+						mouseLeftClick = true;
+						mouseDirection = 1;
+						mouseDirectionTiles = 1;
+					}
 				}
+				// Si l'on a cliqué a cote on efface le menu circulaire
+				if (!mouseLeftClick)
+					mouseRightClick = false;
 			}
-			// Si l'on clique sur le bouton de gauche du menu
-			if (e.getY() > mousePosY - circularMenu.getWidth() / 2
-					&& e.getY() < mousePosY + circularMenu.getWidth() / 2) {
-				if (mousePosX - e.getX() > POSITION_IMAGE_MIN && mousePosX - e.getX() < POSITION_IMAGE_MAX) {
-					mouseLeftClick = true;
-					mouseDirection = 3;
-					mouseDirectionTiles = -1;
-				}
-				// Si l'on clique sur le bouton de droite du menu
-				if (e.getX() - mousePosX > POSITION_IMAGE_MIN && e.getX() - mousePosX < POSITION_IMAGE_MAX) {
-					mouseLeftClick = true;
-					mouseDirection = 1;
-					mouseDirectionTiles = 1;
-				}
-			}
-			// Si l'on a cliqué a cote on efface le menu circulaire
-			if (!mouseLeftClick)
-				mouseRightClick = false;
 		}
 	}
 
@@ -290,18 +294,20 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// Si l'on a uniquement appuyé sur le bouton gauche de la souris
-		if (arg0.getButton() == 1 && !mouseRightClick) {
-			mouseLeftClick = true;
-			mouseDirection = -1;
-			setMouseX(arg0.getX());
-			setMouseY(arg0.getY());
-		}
-		// Si l'on a appué sur le bouton droit de la souris
-		if (arg0.getButton() == 3) {
-			mouseRightClick = true;
-			setMouseX(arg0.getX());
-			setMouseY(arg0.getY());
+		if(!threes.getGameFinish()){
+			// Si l'on a uniquement appuyé sur le bouton gauche de la souris
+			if (arg0.getButton() == 1 && !mouseRightClick) {
+				mouseLeftClick = true;
+				mouseDirection = -1;
+				setMouseX(arg0.getX());
+				setMouseY(arg0.getY());
+			}
+			// Si l'on a appué sur le bouton droit de la souris
+			if (arg0.getButton() == 3) {
+				mouseRightClick = true;
+				setMouseX(arg0.getX());
+				setMouseY(arg0.getY());
+			}
 		}
 	}
 
@@ -310,26 +316,28 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// Si l'on a relaché le bouton gauche après un appui précedent et que le
-		// bouton droit n'a pas été enfoncé auparavant
-		if (arg0.getButton() == 1 && !mouseRightClick) {
-			int diffX = Math.abs(arg0.getX() - mousePosX);
-			int diffY = Math.abs(arg0.getY() - mousePosY);
-
-			if (diffX >= diffY && diffX > SWIPE_MIN_MOVE) {
-				if (mousePosX > arg0.getX()) {
-					threes.moveTiles(-1);
-				} else {
-					threes.moveTiles(1);
+		if(!threes.getGameFinish()){
+			// Si l'on a relaché le bouton gauche après un appui précedent et que le
+			// bouton droit n'a pas été enfoncé auparavant
+			if (arg0.getButton() == 1 && !mouseRightClick) {
+				int diffX = Math.abs(arg0.getX() - mousePosX);
+				int diffY = Math.abs(arg0.getY() - mousePosY);
+	
+				if (diffX >= diffY && diffX > SWIPE_MIN_MOVE) {
+					if (mousePosX > arg0.getX()) {
+						threes.moveTiles(-1);
+					} else {
+						threes.moveTiles(1);
+					}
+				} else if (diffY > diffX && diffY > SWIPE_MIN_MOVE) {
+					if (mousePosY > arg0.getY()) {
+						threes.moveTiles(-1 * Threes.TILES_NB_L);
+					} else {
+						threes.moveTiles(Threes.TILES_NB_L);
+					}
 				}
-			} else if (diffY > diffX && diffY > SWIPE_MIN_MOVE) {
-				if (mousePosY > arg0.getY()) {
-					threes.moveTiles(-1 * Threes.TILES_NB_L);
-				} else {
-					threes.moveTiles(Threes.TILES_NB_L);
-				}
+				mouseLeftClick = false;
 			}
-			mouseLeftClick = false;
 		}
 	}
 
@@ -338,23 +346,25 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// Si l'on a relaché le bouton gauche après un appui précedent et que le
-		// bouton droit n'a pas été enfoncé auparavant
-		if (SwingUtilities.isLeftMouseButton(e) && !mouseRightClick) {
-			int diffX = Math.abs(e.getX() - mousePosX);
-			int diffY = Math.abs(e.getY() - mousePosY);
-
-			if (diffX > diffY && diffX > SWIPE_MIN_MOVE) {
-				if (mousePosX > e.getX()) {
-					mouseDirection = 3;
-				} else {
-					mouseDirection = 1;
-				}
-			} else if (diffY > diffX && diffY > SWIPE_MIN_MOVE) {
-				if (mousePosY > e.getY()) {
-					mouseDirection = 0;
-				} else {
-					mouseDirection = 2;
+		if(!threes.getGameFinish()){
+			// Si l'on a relaché le bouton gauche après un appui précedent et que le
+			// bouton droit n'a pas été enfoncé auparavant
+			if (SwingUtilities.isLeftMouseButton(e) && !mouseRightClick) {
+				int diffX = Math.abs(e.getX() - mousePosX);
+				int diffY = Math.abs(e.getY() - mousePosY);
+	
+				if (diffX > diffY && diffX > SWIPE_MIN_MOVE) {
+					if (mousePosX > e.getX()) {
+						mouseDirection = 3;
+					} else {
+						mouseDirection = 1;
+					}
+				} else if (diffY > diffX && diffY > SWIPE_MIN_MOVE) {
+					if (mousePosY > e.getY()) {
+						mouseDirection = 0;
+					} else {
+						mouseDirection = 2;
+					}
 				}
 			}
 		}
@@ -365,29 +375,31 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseOverImage = -1;
-		// Si l'on a appuyé sur le bouton droit de la souris et fait apparaitre
-		// le menu circulaire 
-		if (mouseRightClick) {
-			// Si l'on clique sur le bouton du haut du menu
-			if (e.getX() > mousePosX - circularMenu.getHeight() / 2
-					&& e.getX() < mousePosX + circularMenu.getHeight() / 2) {
-				if (mousePosY - e.getY() > POSITION_IMAGE_MIN && mousePosY - e.getY() < POSITION_IMAGE_MAX) {
-					mouseOverImage = 0;
-				}
-				// Si l'on clique sur le bouton du bas du menu
-				if (e.getY() - mousePosY > POSITION_IMAGE_MIN && e.getY() - mousePosY < POSITION_IMAGE_MAX) {
-					mouseOverImage = 2;
-				}
-				// Si l'on clique sur le bouton de gauche du menu
-			} else if (e.getY() > mousePosY - circularMenu.getWidth() / 2
-					&& e.getY() < mousePosY + circularMenu.getWidth() / 2) {
-				if (mousePosX - e.getX() > POSITION_IMAGE_MIN && mousePosX - e.getX() < POSITION_IMAGE_MAX) {
-					mouseOverImage = 3;
-				}
-				//Si l'on clique sur le bouton de droite du menu
-				if (e.getX() - mousePosX > POSITION_IMAGE_MIN && e.getX() - mousePosX < POSITION_IMAGE_MAX) {
-					mouseOverImage = 1;
+		if(!threes.getGameFinish()){
+			mouseOverImage = -1;
+			// Si l'on a appuyé sur le bouton droit de la souris et fait apparaitre
+			// le menu circulaire 
+			if (mouseRightClick) {
+				// Si l'on clique sur le bouton du haut du menu
+				if (e.getX() > mousePosX - circularMenu.getHeight() / 2
+						&& e.getX() < mousePosX + circularMenu.getHeight() / 2) {
+					if (mousePosY - e.getY() > POSITION_IMAGE_MIN && mousePosY - e.getY() < POSITION_IMAGE_MAX) {
+						mouseOverImage = 0;
+					}
+					// Si l'on clique sur le bouton du bas du menu
+					if (e.getY() - mousePosY > POSITION_IMAGE_MIN && e.getY() - mousePosY < POSITION_IMAGE_MAX) {
+						mouseOverImage = 2;
+					}
+					// Si l'on clique sur le bouton de gauche du menu
+				} else if (e.getY() > mousePosY - circularMenu.getWidth() / 2
+						&& e.getY() < mousePosY + circularMenu.getWidth() / 2) {
+					if (mousePosX - e.getX() > POSITION_IMAGE_MIN && mousePosX - e.getX() < POSITION_IMAGE_MAX) {
+						mouseOverImage = 3;
+					}
+					//Si l'on clique sur le bouton de droite du menu
+					if (e.getX() - mousePosX > POSITION_IMAGE_MIN && e.getX() - mousePosX < POSITION_IMAGE_MAX) {
+						mouseOverImage = 1;
+					}
 				}
 			}
 		}
@@ -409,3 +421,4 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		this.mousePosY = mouseY;
 	}
 }
+
