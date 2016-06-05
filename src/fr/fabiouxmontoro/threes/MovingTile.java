@@ -1,4 +1,4 @@
-package fr.polytech.ihm.advthrees;
+package fr.fabiouxmontoro.threes;
 
 public class MovingTile extends Tile {
 	public final static int TILES_SPEED_X = TILES_SIZE_X / 5; // Vitesse X des
