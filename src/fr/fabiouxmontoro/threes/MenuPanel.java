@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,6 +35,8 @@ public class MenuPanel extends JPanel {
 		// Version Base
 		playBasic = new JButton("Version Basique");
 		playBasic.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE));
+		playBasic.setBackground(new Color(144,202,242));
+		playBasic.setForeground(Color.white);
 		playBasic.setPreferredSize(new Dimension(Threes.MAIN_BUTTONS_SIZE_X, Threes.MAIN_BUTTONS_SIZE_Y));
 		playBasic.addMouseListener(new MouseListener() {
 			@Override
@@ -61,6 +64,8 @@ public class MenuPanel extends JPanel {
 		// Version Avancee
 		playAdvanced = new JButton("Version Avancée");
 		playAdvanced.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE));
+		playAdvanced.setForeground(Color.white);
+		playAdvanced.setBackground(new Color(238,97,123));
 		playAdvanced.setPreferredSize(new Dimension(Threes.MAIN_BUTTONS_SIZE_X, Threes.MAIN_BUTTONS_SIZE_Y));
 		playAdvanced.addMouseListener(new MouseListener() {
 			@Override
@@ -109,4 +114,3 @@ public class MenuPanel extends JPanel {
 	}
 
 }
-
