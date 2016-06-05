@@ -1,4 +1,4 @@
-package fr.fabiouxmontoro.threes;
+package fr.polytech.ihm.advthrees;
 
 import java.util.TimerTask;
 
