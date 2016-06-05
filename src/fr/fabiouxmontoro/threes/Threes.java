@@ -14,9 +14,9 @@ public class Threes extends JFrame {
 	public final static int TILES_NB_L = 4; // Nombre de tuiles par ligne
 	public final static int TILES_NB = TILES_NB_L * TILES_NB_L; // Nombre de
 																// tuiles total
-	public final static int TILES_INIT_MIN = 16; // Nombre de tuiles minimum au
+	public final static int TILES_INIT_MIN = 4; // Nombre de tuiles minimum au
 													// démarrage
-	public final static int TILES_INIT_MAX = 16; // Nombre de tuiles maximum au
+	public final static int TILES_INIT_MAX = 6; // Nombre de tuiles maximum au
 													// démarrage
 
 	public final static int WINDOW_SIZE_X = Tile.TILES_SIZE_X * TILES_NB_L + Tile.TILES_GAP * (TILES_NB_L + 1); // Largeur
