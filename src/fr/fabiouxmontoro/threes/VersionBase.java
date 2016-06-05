@@ -1,4 +1,4 @@
-package fr.polytech.ihm.advthrees;
+package fr.fabiouxmontoro.threes;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
