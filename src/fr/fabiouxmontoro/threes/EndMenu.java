@@ -145,7 +145,6 @@ public class EndMenu extends JPanel
 	            e.printStackTrace();
 	         }	
 		}
-		
 	}
 	
 	public void read(){
@@ -180,9 +179,14 @@ public class EndMenu extends JPanel
 	
 	public void updateValues(){
 		renderScore.setText("Votre score est de "+Integer.toString(score));
-		for(int i=0;i<5;i++){
-			if(scores.get(i)!=null){
-				ranking[i].setText(Integer.toString(scores.get(i)));
+		if(scores.size()>5){
+			for(int i=0;i<5;i++){
+					ranking[i].setText((i+1)+" : " + Integer.toString(scores.get(i)));
+			}
+		}
+		else{
+			for(int i=0;i<scores.size();i++){
+				ranking[i].setText((i+1)+" : " + Integer.toString(scores.get(i)));
 			}
 		}
 	}
