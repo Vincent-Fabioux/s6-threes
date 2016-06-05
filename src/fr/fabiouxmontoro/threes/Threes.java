@@ -59,7 +59,6 @@ public class Threes extends JFrame {
 
 	    //this.setSize(WINDOW_SIZE_X + 6, WINDOW_SIZE_Y + 29);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    this.setLocationRelativeTo(null);
 		setSize(new Dimension(WINDOW_SIZE_X, WINDOW_SIZE_Y));
 	    contentPane = (JPanel) getContentPane();
 	    
@@ -72,10 +71,12 @@ public class Threes extends JFrame {
 	    tilesValue = new int[TILES_NB];
 		menuPanel = new MenuPanel(this);
 	    gamePanel = new GamePanel(this);
-	    endPanel = new EndMenu();
-
+	    endPanel = new EndMenu(this);
+	    
 	    contentPane.add(menuPanel);
+	    
 	    setVisible(true);
+	    this.setLocationRelativeTo(null);
 	}
 
 
@@ -107,6 +108,13 @@ public class Threes extends JFrame {
 	}
 
 
+	public void replay(){
+		 contentPane.removeAll();
+		 play();
+		 contentPane.revalidate();
+		 contentPane.repaint();
+	}
+	
 	/**
      * Initialise les tuiles
      */
@@ -248,7 +256,11 @@ public class Threes extends JFrame {
 			if(!mouvement && checkAllMoves())
 			{
 				controlsFreeze = true;
-			    contentPane.add(endPanel, 0);
+				endPanel.setScore(getScore());
+				endPanel.writeFile();
+				endPanel.read();
+				endPanel.updateValues();
+				contentPane.add(endPanel, 0);
 			    contentPane.add(gamePanel, 1);
 			    gamePanel.revalidate();
 			    gamePanel.repaint();
@@ -341,11 +353,12 @@ public class Threes extends JFrame {
      * Calcule le score comme la somme de toutes les tuiles
      * @return	score de la partie
      */
-	private int getScore()
+	public int getScore()
 	{
 		int score = 0;
-		for(int i = 0; i < TILES_NB; i++)
+		for(int i = 0; i < TILES_NB; i++){
 			score += tilesValue[i];
+		}
 		return score;
 	}
 
