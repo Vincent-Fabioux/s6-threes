@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
 	private final static long serialVersionUID = 1L;
-	private final static int SWIPE_MIN_MOVE = 5;
+	private final static int SWIPE_MIN_MOVE = 54;
 
 	private final static int POSITION_IMAGE_MIN = 54;
 	private final static int POSITION_IMAGE_MAX = 109;
@@ -293,7 +293,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 * Permets de savoir si un bouton de la souris a été enfoncé
 	 */
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent arg0) { 
 		if(!threes.getGameFinish()){
 			// Si l'on a uniquement appuyé sur le bouton gauche de la souris
 			if (arg0.getButton() == 1 && !mouseRightClick) {
@@ -365,6 +365,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 					} else {
 						mouseDirection = 2;
 					}
+				}
+				else{
+					mouseDirection=-1;
 				}
 			}
 		}
