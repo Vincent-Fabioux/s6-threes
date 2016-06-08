@@ -57,8 +57,8 @@ public class EndMenu extends JPanel {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		// Definition du boutonRejouer
-		menu.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE));
-		menu.setSize(new Dimension(Threes.MAIN_BUTTONS_SIZE_X, Threes.MAIN_BUTTONS_SIZE_Y));
+		menu.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE-7));
+		menu.setPreferredSize(new Dimension((this.getWidth()/2)-10, Threes.MAIN_BUTTONS_SIZE_Y));
 		menu.setBackground(Color.white);
 		menu.addMouseListener(new MouseListener() {
 			@Override
@@ -84,8 +84,8 @@ public class EndMenu extends JPanel {
 		});
 
 		// Definition du bouton Exit
-		exit.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE));
-		exit.setSize(new Dimension(Threes.MAIN_BUTTONS_SIZE_X, Threes.MAIN_BUTTONS_SIZE_Y));
+		exit.setFont(new Font("Arial", Font.BOLD, Threes.MAIN_BUTTONS_POLICE_SIZE-7));
+		exit.setPreferredSize(new Dimension((this.getWidth()/2)-10, Threes.MAIN_BUTTONS_SIZE_Y));
 		exit.setBackground(Color.white);
 		exit.addMouseListener(new MouseListener() {
 
