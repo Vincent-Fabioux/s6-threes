@@ -49,7 +49,7 @@ public class Threes extends JFrame {
 																			// du
 																			// score
 
-	public final static int FRAME_DELAY = 40; // Temps entre chaque frame
+	public final static int FRAME_DELAY = 20; // Temps entre chaque frame
 												// (millisecondes)
 	public final static int SWIPE_MIN_MOVE = 5; // Mouvement minimal de la
 												// souris pour être pris en
