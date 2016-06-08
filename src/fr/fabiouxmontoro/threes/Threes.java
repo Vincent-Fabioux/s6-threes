@@ -23,7 +23,7 @@ public class Threes extends JFrame {
 																												// de
 																												// la
 																												// fenêtre
-	public final static int WINDOW_SIZE_Y = Tile.TILES_SIZE_Y * TILES_NB_L + Tile.TILES_GAP * (TILES_NB_L + 1); // Hauteur
+	public final static int WINDOW_SIZE_Y = (Tile.TILES_SIZE_Y+10) * TILES_NB_L + Tile.TILES_GAP * (TILES_NB_L + 1); // Hauteur
 																												// de
 																												// la
 																												// fenêtre
