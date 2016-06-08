@@ -127,7 +127,7 @@ public class Threes extends JFrame {
 			contentPane.add(versionBase, 0);
 			contentPane.revalidate();
 			contentPane.repaint();
-			versionBase.play(this.getWidth(), this.getHeight());
+			versionBase.play();
 		}
 	}
 
