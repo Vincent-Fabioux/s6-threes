@@ -8,7 +8,7 @@ import java.awt.geom.RoundRectangle2D;
 public class Tile
 {
 	public final static int TILES_SIZE_X = 80;						// Largeur des tuiles
-	public final static int TILES_SIZE_Y = 120;						// Hauteur des tuiles
+	public final static int TILES_SIZE_Y = 110;						// Hauteur des tuiles
 	public final static int TILES_ROUND = 50;						// Arrondi des tuiles
 	public final static int TILES_GROWTH = 6;					// Grandissement des tuiles combinées
 	public final static int TILES_SPAWN_GROWTH = -10;			// Grandissement des tuiles qui apparaissent
