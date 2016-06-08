@@ -118,7 +118,9 @@ public class EndMenu extends JPanel {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		title.setFont(new Font("Arial", Font.BOLD, 60));
+		title.setForeground(new Color(238,97,123));
 		titleRanking.setFont(new Font("Arial", Font.BOLD, 30));
+		titleRanking.setForeground(new Color(144,202,242));
 		JLabel titleImage = new JLabel(new ImageIcon("podium.jpg"));
 		this.add(titleImage);
 		Box b1 = Box.createHorizontalBox();
