@@ -35,30 +35,22 @@ public class VersionBase extends JPanel implements KeyListener, MouseListener {
 	private final static int TILES_INIT_MAX = 6; // Nombre de tuiles maximum au
 													// démarrage
 
-	private final static int WINDOW_SIZE_X = TILES_SIZE * TILES_NB_L + TILES_GAP * (TILES_NB_L + 1); // Largeur
-																										// de
-																										// la
-																										// fenêtre
-	private final static int WINDOW_SIZE_Y = TILES_SIZE * TILES_NB_L + TILES_GAP * (TILES_NB_L + 1); // Hauteur
-																										// de
-																										// la
-																										// fenêtre
 
-	private final static int MAIN_BUTTONS_SIZE_X = WINDOW_SIZE_X; // Largeur des
+	private final static int MAIN_BUTTONS_SIZE_X = Threes.WINDOW_SIZE_X; // Largeur des
 																	// boutons
 																	// principaux
-	private final static int MAIN_BUTTONS_SIZE_Y = WINDOW_SIZE_X / 8; // Hauteur
+	private final static int MAIN_BUTTONS_SIZE_Y = Threes.WINDOW_SIZE_X / 8; // Hauteur
 																		// des
 																		// boutons
 																		// principaux
-	private final static int MAIN_BUTTONS_POLICE_SIZE = WINDOW_SIZE_X / 7; // Taille
+	private final static int MAIN_BUTTONS_POLICE_SIZE = Threes.WINDOW_SIZE_X / 7; // Taille
 																			// de
 																			// la
 																			// police
 																			// des
 																			// boutons
 																			// principaux
-	private final static int SCORE_LABEL_POLICE_SIZE = WINDOW_SIZE_X / 20; // Taille
+	private final static int SCORE_LABEL_POLICE_SIZE = Threes.WINDOW_SIZE_X / 20; // Taille
 																			// de
 																			// la
 																			// police
